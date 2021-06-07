@@ -1,0 +1,17 @@
+name: PR Checks
+on: [pull_request]
+
+jobs:
+    run_tests:
+        name: Rust CI
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Install Rust Toolchains
+              uses: actions-rs/toolchain@v1
+              with:
+                  toolchain: nightly
+            - run: |
+                  ./scripts/init.sh
+                  ./scripts/build.sh
+                  ./scripts/test.sh

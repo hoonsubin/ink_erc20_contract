@@ -3,7 +3,7 @@ on: [pull_request]
 
 jobs:
     run_tests:
-        name: Rust CI
+        name: Rust CI Ubuntu
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
@@ -15,7 +15,9 @@ jobs:
                 target: x86_64-unknown-linux-gnu
                 override: true
             - name: Install ink CLI
-              run: ./scripts/init.sh
+              run: |
+                apt install -y binaryen
+                ./scripts/init.sh
               shell: bash
             - name: Build Project
               run:  ./scripts/build.sh

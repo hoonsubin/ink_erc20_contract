@@ -17,9 +17,9 @@ jobs:
             - name: Install wasm-opt
               # we manually install binaryen with version >= 99 which is needed for ink cli
               run: |
-                sudo apt install -y curl
-                curl http://mirrors.kernel.org/ubuntu/pool/universe/b/binaryen/binaryen_99-3_amd64.deb --output binaryen.deb
-                sudo apt install -y ./binaryen.deb
+                wget -O binaryen.deb http://mirrors.kernel.org/ubuntu/pool/universe/b/binaryen/binaryen_99-3_amd64.deb
+                sudo dpkg -i -y binaryen.deb
+                sudo apt-get install -f
             - name: Install ink CLI
               run: |
                 ./scripts/init.sh

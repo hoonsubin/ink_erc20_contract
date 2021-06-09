@@ -39,5 +39,6 @@ jobs:
           name: contract
           # we only need the contract file, wasm binary, and the abi
           path: |
-            target/ink/*.{contract,wasm}
+            target/ink/*.contract
+            target/ink/*.wasm
             target/ink/metadata.json

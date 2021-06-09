@@ -8,9 +8,12 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - name: Set Rust Toolchain
-            - uses: actions-rs/toolchain@v1
-            - run:  ./scripts/init.sh
+              uses: actions-rs/toolchain@v1
+              run:  ./scripts/init.sh
+              shell: bash
             - name: Build Project
               run:  ./scripts/build.sh
+              shell: bash
             - name: Run Unit Test and Format Check
               run: ./scripts/test.sh
+              shell: bash

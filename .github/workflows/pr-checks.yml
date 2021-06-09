@@ -8,7 +8,15 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - uses: actions-rs/toolchain@v1
-            - run:  ./scripts/init.sh
+              with:
+                toolchain: nightly-2021-06-09
+                profile: minimal
+                components: rustfmt, llvm-tools-preview, rust-src
+                target: wasm32-unknown-unknown
+                override: true
+            - name: Install ink CLI
+              run: cargo install --force cargo-contract
+              shell: bash
             - name: Build Project
               run:  ./scripts/build.sh
               shell: bash

@@ -7,9 +7,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - name: Install Rust Toolchains
+            - name: Set Rust Toolchain
               uses: actions-rs/toolchain@v1
-            - run: |
-                  ./scripts/init.sh
-                  ./scripts/build.sh
-                  ./scripts/test.sh
+              run:  ./scripts/init.sh
+            - name: Build Project
+              run:  ./scripts/build.sh
+            - name: Run Unit Test and Format Check
+              run: ./scripts/test.sh

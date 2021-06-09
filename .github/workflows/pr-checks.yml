@@ -9,8 +9,6 @@ jobs:
             - uses: actions/checkout@v2
             - name: Install Rust Toolchains
               uses: actions-rs/toolchain@v1
-              with:
-                  toolchain: nightly
             - run: |
                   ./scripts/init.sh
                   ./scripts/build.sh

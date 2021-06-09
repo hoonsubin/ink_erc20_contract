@@ -7,10 +7,8 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - name: Set Rust Toolchain
-              uses: actions-rs/toolchain@v1
-              run:  ./scripts/init.sh
-              shell: bash
+            - uses: actions-rs/toolchain@v1
+            - run:  ./scripts/init.sh
             - name: Build Project
               run:  ./scripts/build.sh
               shell: bash

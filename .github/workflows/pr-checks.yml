@@ -16,7 +16,7 @@ jobs:
                 override: true
             - name: Install ink CLI
               run: |
-                apt install -y binaryen
+                sudo apt install -y binaryen
                 ./scripts/init.sh
               shell: bash
             - name: Build Project

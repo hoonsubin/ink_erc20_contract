@@ -18,7 +18,7 @@ jobs:
               # we manually install binaryen with version >= 99 which is needed for ink cli
               run: |
                 wget -O binaryen.deb http://mirrors.kernel.org/ubuntu/pool/universe/b/binaryen/binaryen_99-3_amd64.deb
-                sudo dpkg -i -y binaryen.deb
+                sudo dpkg -i binaryen.deb
                 sudo apt-get install -f
             - name: Install ink CLI
               run: |

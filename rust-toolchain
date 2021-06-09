@@ -1,0 +1,5 @@
+[toolchain]
+channel = "nightly-2021-06-08"
+components = [ "rustfmt", "llvm-tools-preview", "rust-src", "rls-preview" ]
+targets = [ "wasm32-unknown-unknown", "x86_64-unknown-linux-gnu", "x86_64-apple-darwin" ]
+profile = "default"

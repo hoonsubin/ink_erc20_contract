@@ -1,0 +1,44 @@
+name: Upload Ink Contract File
+on: [pull_request]
+# uncomment this after testing
+# on:
+#   push:
+#     branches:
+#       - 'master'
+#       - 'main'
+
+jobs:
+  upload_contract:
+    name: Expose Contract as Artifact
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          profile: minimal
+          components: llvm-tools-preview, rust-src
+          target: x86_64-unknown-linux-gnu
+          override: true
+      - name: Install wasm-opt
+        # we manually install binaryen with version >= 99 which is needed for ink cli
+        run: |
+          wget -O binaryen.deb http://mirrors.kernel.org/ubuntu/pool/universe/b/binaryen/binaryen_99-3_amd64.deb
+          sudo dpkg -i binaryen.deb
+          sudo apt-get install -f
+      - name: Install ink CLI
+        run: |
+          ./scripts/init.sh
+        shell: bash
+      - name: Build Project
+        run: ./scripts/build.sh
+        shell: bash
+      - name: Upload Contract File
+        uses: actions/upload-artifact@v2
+        with:
+          name: contract
+          # we only need the contract file, wasm binary, and the abi
+          path: |
+            target/ink/*.contract
+            target/ink/*.wasm
+            target/ink/metadata.json

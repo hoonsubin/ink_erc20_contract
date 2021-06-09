@@ -2,16 +2,60 @@ name: PR Checks
 on: [pull_request]
 
 jobs:
-    run_tests:
-        name: Rust CI
+    build_contract:
+        name: Build ink Contract
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - name: Install Rust Toolchains
-              uses: actions-rs/toolchain@v1
+            - uses: actions-rs/toolchain@v1
               with:
-                  toolchain: nightly
-            - run: |
-                  ./scripts/init.sh
-                  ./scripts/build.sh
-                  ./scripts/test.sh
+                toolchain: nightly
+                profile: minimal
+                components: llvm-tools-preview, rust-src
+                target: x86_64-unknown-linux-gnu
+                override: true
+            - name: Install wasm-opt
+              # we manually install binaryen with version >= 99 which is needed for ink cli
+              run: |
+                wget -O binaryen.deb http://mirrors.kernel.org/ubuntu/pool/universe/b/binaryen/binaryen_99-3_amd64.deb
+                sudo dpkg -i binaryen.deb
+                sudo apt-get install -f
+            - name: Install ink CLI
+              run: |
+                ./scripts/init.sh
+              shell: bash
+            - name: Build Project
+              run:  ./scripts/build.sh
+              shell: bash
+    check_format:
+        name: Check Code Formatting
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions-rs/toolchain@v1
+              with:
+                toolchain: nightly
+                profile: minimal
+                components: rustfmt, llvm-tools-preview, rust-src
+                target: x86_64-unknown-linux-gnu
+                override: true
+            - name: Run Unit Test and Format Check
+              run: |
+                cargo +nightly fmt --all -- --check
+              shell: bash
+    unit_test:
+        name: Run Unit Tests
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions-rs/toolchain@v1
+              with:
+                toolchain: nightly
+                profile: minimal
+                components: llvm-tools-preview, rust-src
+                target: x86_64-unknown-linux-gnu
+                override: true
+            - name: Run Unit Test and Format Check
+              run: |
+                cargo +nightly test
+              shell: bash
